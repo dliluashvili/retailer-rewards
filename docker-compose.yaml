@@ -6,7 +6,20 @@ services:
       context: ./
     container_name: retailer-rewards-server
     command: npm run start:dev
+    depends_on:
+      - retailer-rewards-db
     volumes: 
       - ./:/usr/app/src
     ports:
       - '3000:3000' 
+
+  retailer-rewards-db:
+    image: postgres
+    container_name: retailer-rewards-db
+    volumes:
+      - retailer-rewards-db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+    ports: 
+      - '5432:5432'
+volumes: 
+  retailer-rewards-db:
