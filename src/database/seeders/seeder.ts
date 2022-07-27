@@ -6,7 +6,8 @@ export class Seeder {
     constructor(
         private readonly userSeederService: UserSeederService
     ) {}
-    async seed() {
+
+    async run() {
         return this.userSeederService.create()
     }
 }

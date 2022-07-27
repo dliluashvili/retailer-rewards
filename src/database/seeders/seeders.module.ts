@@ -14,7 +14,6 @@ import { Seeder } from './seeder'
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
         UsersSeederModule,
     ],
-    
     providers: [Logger, Seeder],
 })
 export class SeederModule {}
