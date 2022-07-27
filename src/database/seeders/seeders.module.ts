@@ -1,9 +1,9 @@
-import { TypeOrmConfigService } from './config/typeorm.config'
+import { UsersSeederModule } from './users/users-seeder.module'
+import { TypeOrmConfigService } from './../../config/typeorm.config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { Logger, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { Module } from '@nestjs/common'
-import { UsersModule } from './modules/users/users.module'
-
+import { Seeder } from './seeder'
 
 @Module({
     imports: [
@@ -12,9 +12,9 @@ import { UsersModule } from './modules/users/users.module'
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
-        UsersModule,
+        UsersSeederModule,
     ],
-    controllers: [],
-    providers: [],
+    
+    providers: [Logger, Seeder],
 })
-export class AppModule {}
+export class SeederModule {}
