@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  retailer-rewards-server:
+    build: 
+      context: ./
+    container_name: retailer-rewards-server
+    command: npm run start:dev
+    volumes: 
+      - ./:/usr/app/src
+    ports:
+      - '3000:3000'
