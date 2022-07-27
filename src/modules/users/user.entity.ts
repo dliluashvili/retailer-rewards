@@ -1,5 +1,11 @@
 import { IUser } from './user.interface'
-import { Column, Entity, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm'
+import {
+    Column,
+    Entity,
+    CreateDateColumn,
+    UpdateDateColumn,
+    PrimaryGeneratedColumn,
+} from 'typeorm'
 
 @Entity({
     name: 'users',
@@ -14,7 +20,9 @@ export class User implements IUser {
     @Column()
     lastname: string
 
-    @Column()
+    @Column({
+        unique: true,
+    })
     email: string
 
     @CreateDateColumn()
