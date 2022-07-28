@@ -25,6 +25,11 @@ export class User implements IUser {
     })
     email: string
 
+    @Column({
+        default: 0,
+    })
+    point: number
+
     @CreateDateColumn()
     created_at: Date
 
