@@ -27,6 +27,11 @@ export class Payment implements IPayment {
     @Column()
     description: string
 
+    @Column({
+        default: 0
+    })
+    calculated_point: number
+
     @CreateDateColumn()
     created_at: Date
 

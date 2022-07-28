@@ -33,6 +33,8 @@ export class PaymentsService {
         try {
             const point = new CountPoint(price).count()
 
+            createPaymentDto.calculated_point = point
+
             const payment = this.paymentRepo.create(createPaymentDto)
 
             await this.paymentRepo.save(payment)
