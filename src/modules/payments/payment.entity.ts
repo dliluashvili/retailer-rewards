@@ -28,13 +28,10 @@ export class Payment implements IPayment {
     description: string
 
     @Column({
-        default: 0
+        default: 0,
     })
     calculated_point: number
 
-    @CreateDateColumn()
+    @Column()
     created_at: Date
-
-    @UpdateDateColumn()
-    updated_at: Date
 }

@@ -6,5 +6,4 @@ export interface IPayment {
     product: string
     description: string
     created_at?: Date
-    updated_at?: Date
 }
