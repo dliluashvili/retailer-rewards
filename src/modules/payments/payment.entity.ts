@@ -1,4 +1,5 @@
-import { IPayment } from './../../../dist/modules/payments/payment.interface.d'
+import { IPayment } from './payment.interface'
+
 import {
     Column,
     CreateDateColumn,
@@ -16,6 +17,9 @@ export class Payment implements IPayment {
 
     @Column()
     user_id: number
+
+    @Column()
+    price: number
 
     @Column()
     product: string
