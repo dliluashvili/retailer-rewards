@@ -7,9 +7,24 @@ export class CountPoint {
     }
 
     count(): number {
-        return (
-            (this.price - 50) * this.pointOver50 +
-            (this.price - 100) * this.pointOver100
-        )
+        let point = 0
+
+        if (this.price > 50) {
+            point += this.countOver50()
+        }
+
+        if (this.price > 100) {
+            point += this.countOver100()
+        }
+
+        return point
+    }
+
+    private countOver50(): number {
+        return (this.price - 50) * this.pointOver50
+    }
+
+    private countOver100(): number {
+        return (this.price - 100) * this.pointOver100
     }
 }
