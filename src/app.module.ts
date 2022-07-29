@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { Module } from '@nestjs/common'
 import { UsersModule } from './modules/users/users.module'
 import { PaymentsModule } from './modules/payments/payments.module'
+import { MonthlyReportModule } from './modules/monthly-report/monthly-report.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { PaymentsModule } from './modules/payments/payments.module'
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
         UsersModule,
         PaymentsModule,
+        MonthlyReportModule,
     ],
     controllers: [],
     providers: [],
