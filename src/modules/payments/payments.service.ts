@@ -1,3 +1,4 @@
+import { PaymentCreatedEvent } from './../../events/payment-created.event'
 import { MonthlyReport } from './../monthly-report/monthly-report.entity'
 import { CreatePaymentDto } from './dtos/create-payment.dto'
 import {
@@ -10,13 +11,15 @@ import { FindManyOptions, Repository } from 'typeorm'
 import { Payment } from './payment.entity'
 import { UsersService } from '../users/users.service'
 import { CountPoint } from 'src/utils/count-point'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 
 @Injectable()
 export class PaymentsService {
     constructor(
         @InjectRepository(Payment)
         private readonly paymentRepo: Repository<Payment>,
-        private readonly usersService: UsersService
+        private readonly usersService: UsersService,
+        private readonly eventEmitter: EventEmitter2
     ) {}
 
     async find(filter: FindManyOptions<Payment> = {}): Promise<Payment[]> {
@@ -64,9 +67,10 @@ export class PaymentsService {
 
             await this.paymentRepo.save(payment)
 
-            await this.usersService.update(userId, {
-                point: user.point + point,
-            })
+            this.eventEmitter.emit(
+                'payment.created',
+                new PaymentCreatedEvent(userId, point)
+            )
 
             return payment.id
         } catch {

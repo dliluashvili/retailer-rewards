@@ -1,4 +1,5 @@
 import { MonthlyReportSeederModule } from './monthly-report/monthly-report-seeder.module'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 import { PaymentsSeederModule } from './payments/payments-seeder.module'
 import { UsersSeederModule } from './users/users-seeder.module'
 import { TypeOrmConfigService } from './../../config/typeorm.config'
@@ -14,6 +15,7 @@ import { Seeder } from './seeder'
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
+        EventEmitterModule.forRoot(),
         UsersSeederModule,
         PaymentsSeederModule,
         MonthlyReportSeederModule,
