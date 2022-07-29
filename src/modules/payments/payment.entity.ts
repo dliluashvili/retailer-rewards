@@ -2,10 +2,8 @@ import { IPayment } from './payment.interface'
 
 import {
     Column,
-    CreateDateColumn,
     Entity,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from 'typeorm'
 
 @Entity({
@@ -32,6 +30,8 @@ export class Payment implements IPayment {
     })
     calculated_point: number
 
-    @Column()
+    @Column({
+        default: 'now()'
+    })
     created_at: Date
 }

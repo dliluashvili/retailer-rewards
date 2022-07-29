@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Payment } from './payment.entity'
 import { UsersService } from '../users/users.service'
-import { IPayment } from './payment.interface'
 import { CountPoint } from 'src/utils/count-point'
 
 @Injectable()
@@ -34,7 +33,7 @@ export class PaymentsService {
             const point = new CountPoint(price).count()
 
             createPaymentDto.calculated_point = point
-
+   
             const payment = this.paymentRepo.create(createPaymentDto)
 
             await this.paymentRepo.save(payment)

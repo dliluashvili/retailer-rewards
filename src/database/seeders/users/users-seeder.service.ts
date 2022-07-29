@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common'
-import { CreateUserDto } from 'src/modules/users/dtos/create-user.dto'
-import { UsersService } from 'src/modules/users/users.service'
+import { CreateUserDto } from '../../../modules/users/dtos/create-user.dto'
+import { UsersService } from '../../../modules/users/users.service'
 import { faker } from '@faker-js/faker'
+import { ISeeder } from '../interfaces/seeder.interface'
 
 @Injectable()
-export class UserSeederService {
+export class UserSeederService implements ISeeder<CreateUserDto> {
     constructor(private readonly usersService: UsersService) {}
 
     async create() {
-        for (let i = 0; i < 50; i++) {
-            const user = await this.generateUser()
+        for (let i = 0; i < 10; i++) {
+            const user = await this.generate()
 
             await this.usersService.create(user)
         }
@@ -17,7 +18,7 @@ export class UserSeederService {
         return 'created'
     }
 
-    async generateUser(): Promise<CreateUserDto> {
+    async generate(): Promise<CreateUserDto> {
         const firstname = faker.name.firstName()
 
         const email = `${firstname.toLowerCase()}@gmail.com`
@@ -25,7 +26,7 @@ export class UserSeederService {
         const found = await this.usersService.findOne({ email })
 
         if (found) {
-            return this.generateUser()
+            return this.generate()
         }
 
         const lastname = faker.name.lastName()

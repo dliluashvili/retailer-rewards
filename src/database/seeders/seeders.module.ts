@@ -1,3 +1,4 @@
+import { PaymentsSeederModule } from './payments/payments-seeder.module'
 import { UsersSeederModule } from './users/users-seeder.module'
 import { TypeOrmConfigService } from './../../config/typeorm.config'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -13,6 +14,7 @@ import { Seeder } from './seeder'
         }),
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
         UsersSeederModule,
+        PaymentsSeederModule,
     ],
     providers: [Logger, Seeder],
 })

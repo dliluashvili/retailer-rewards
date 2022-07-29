@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post } from '@nestjs/common'
 import { CreatePaymentDto } from './dtos/create-payment.dto'
 import { PaymentsService } from './payments.service'
 
