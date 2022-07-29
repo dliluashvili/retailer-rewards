@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { User } from 'src/modules/users/user.entity'
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm'
 import { IMonthlyReport } from './monthly-report.interface'
 
 @Entity()
@@ -11,6 +18,14 @@ export class MonthlyReport implements IMonthlyReport {
 
     @Column()
     date: Date
+
+    @ManyToOne(() => User, (user) => user.monthly_reports, {
+        onDelete: 'CASCADE',
+    })
+    @JoinColumn({
+        name: 'user_id',
+    })
+    user: User
 
     @Column()
     point: number
