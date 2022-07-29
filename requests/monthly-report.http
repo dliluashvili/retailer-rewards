@@ -1,0 +1,13 @@
+
+# Get all monthly report
+GET http://localhost:3000/monthly-report HTTP/1.1
+
+###
+# Get quarter report
+GET http://localhost:3000/monthly-report/quarters HTTP/1.1
+
+###
+# Get filtered quarter report
+# Query params: user_id, month, quarter
+GET http://localhost:3000/monthly-report/quarters?user_id=1&month=8&quarter=3 HTTP/1.1
+

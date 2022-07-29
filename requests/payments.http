@@ -1,0 +1,18 @@
+# Get all payments
+GET http://localhost:3000/payments HTTP/1.1
+
+###
+# Get monthly payments
+GET http://localhost:3000/payments/monthly HTTP/1.1
+
+###
+#Create new payment
+POST http://localhost:3000/payments HTTP/1.1
+content-type: application/json
+
+{
+    "user_id": 11,
+    "price": 120,
+    "product": "Test product09",
+    "description": "An amazing product"
+}
