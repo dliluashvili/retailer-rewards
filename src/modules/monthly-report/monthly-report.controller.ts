@@ -1,5 +1,5 @@
 import { MonthlyReportService } from './monthly-report.service'
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { IFilterQuery } from './filter-query.interface'
 
 @Controller('monthly-report')
