@@ -18,6 +18,16 @@ export class PaymentsService {
         private readonly usersService: UsersService
     ) {}
 
+    async monthly() {
+        return this.paymentRepo.query(`select
+                user_id,
+                DATE_TRUNC('month',created_at) as month,
+                SUM(calculated_point)
+            from payments
+            GROUP BY month, user_id;
+            `)
+    }
+
     async create(createPaymentDto: CreatePaymentDto): Promise<number> {
         const { price, user_id: userId } = createPaymentDto
 
@@ -33,7 +43,7 @@ export class PaymentsService {
             const point = new CountPoint(price).count()
 
             createPaymentDto.calculated_point = point
-   
+
             const payment = this.paymentRepo.create(createPaymentDto)
 
             await this.paymentRepo.save(payment)
