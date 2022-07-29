@@ -17,13 +17,16 @@ export class MonthlyReportService {
     async find(
         filter: FindManyOptions<MonthlyReport> = {}
     ): Promise<MonthlyReport[]> {
-        return this.monthlyReportRepo.find(filter)
+        return this.monthlyReportRepo
+            .query(`select u.id as user_id, u.firstname, u.lastname, u.email, quarter,monthly_report.point
+            from monthly_report left join users u on u.id = monthly_report.user_id`)
     }
 
     async quarters(filter: IFilterQuery = {}) {
         const params = []
 
-        let query = `select user_id, quarter, date_part('month',date) as month, SUM(point) from monthly_report`
+        let query = `select u.id as user_id, u.firstname, u.lastname, u.email, quarter, date_part('month',date) as month, SUM(monthly_report.point) as point 
+        from monthly_report left join users u on u.id = monthly_report.user_id`
 
         let paramsIndex = 0
 
@@ -37,8 +40,8 @@ export class MonthlyReportService {
                 params.push(value)
             }
         })
-        
-        query += ` group by user_id, month, quarter`
+
+        query += ` group by u.id, month, quarter`
 
         if (filter.month) {
             query += ` HAVING date_part('month',date)=$${++paramsIndex}`

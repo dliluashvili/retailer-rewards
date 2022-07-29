@@ -20,16 +20,27 @@ export class PaymentsService {
     ) {}
 
     async find(filter: FindManyOptions<Payment> = {}): Promise<Payment[]> {
-        return this.paymentRepo.find(filter)
+        return this.paymentRepo.query(`select
+        u.id as user_id,
+        u.firstname,
+        u.lastname,
+        u.email,
+        payments.*
+    from payments
+    left join users u on u.id = payments.user_id`)
     }
 
     async monthly(): Promise<MonthlyReport[]> {
         return this.paymentRepo.query(`select
-                user_id,
-                DATE_TRUNC('month',created_at) as date,
-                SUM(calculated_point) as point
-            from payments
-            GROUP BY date, user_id;
+        u.id as user_id,
+        u.firstname,
+        u.lastname,
+        u.email,
+        DATE_TRUNC('month',payments.created_at) as date,
+        SUM(calculated_point) as point
+    from payments
+    left join users u on u.id = payments.user_id
+    GROUP BY date, u.id;
             `)
     }
 
