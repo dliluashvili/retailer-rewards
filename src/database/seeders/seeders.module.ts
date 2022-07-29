@@ -1,3 +1,4 @@
+import { MonthlyReportSeederModule } from './monthly-report/monthly-report-seeder.module'
 import { PaymentsSeederModule } from './payments/payments-seeder.module'
 import { UsersSeederModule } from './users/users-seeder.module'
 import { TypeOrmConfigService } from './../../config/typeorm.config'
@@ -15,6 +16,7 @@ import { Seeder } from './seeder'
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
         UsersSeederModule,
         PaymentsSeederModule,
+        MonthlyReportSeederModule,
     ],
     providers: [Logger, Seeder],
 })
