@@ -28,5 +28,8 @@ export class MonthlyReport implements IMonthlyReport {
     user: User
 
     @Column()
+    quarter: number
+
+    @Column()
     point: number
 }
