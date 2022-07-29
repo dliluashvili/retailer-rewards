@@ -6,7 +6,7 @@ import {
     NotFoundException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { FindManyOptions, Repository } from 'typeorm'
 import { Payment } from './payment.entity'
 import { UsersService } from '../users/users.service'
 import { CountPoint } from 'src/utils/count-point'
@@ -18,6 +18,10 @@ export class PaymentsService {
         private readonly paymentRepo: Repository<Payment>,
         private readonly usersService: UsersService
     ) {}
+
+    async find(filter: FindManyOptions<Payment> = {}): Promise<Payment[]> {
+        return this.paymentRepo.find(filter)
+    }
 
     async monthly(): Promise<MonthlyReport[]> {
         return this.paymentRepo.query(`select

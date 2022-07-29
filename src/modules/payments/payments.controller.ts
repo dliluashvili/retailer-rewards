@@ -6,13 +6,18 @@ import { PaymentsService } from './payments.service'
 export class PaymentsController {
     constructor(private readonly paymentsService: PaymentsService) {}
 
-    @Get('/monthly')
-    monthly() {
-        return this.paymentsService.monthly()
+    @Get()
+    find() {
+        return this.paymentsService.find()
     }
 
     @Post()
     create(@Body() createPaymentDto: CreatePaymentDto) {
         return this.paymentsService.create(createPaymentDto)
+    }
+
+    @Get('/monthly')
+    monthly() {
+        return this.paymentsService.monthly()
     }
 }
