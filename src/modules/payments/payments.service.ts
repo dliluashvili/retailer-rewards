@@ -1,3 +1,4 @@
+import { MonthlyReport } from './../monthly-report/monthly-report.entity'
 import { CreatePaymentDto } from './dtos/create-payment.dto'
 import {
     BadRequestException,
@@ -18,13 +19,13 @@ export class PaymentsService {
         private readonly usersService: UsersService
     ) {}
 
-    async monthly() {
+    async monthly(): Promise<MonthlyReport[]> {
         return this.paymentRepo.query(`select
                 user_id,
-                DATE_TRUNC('month',created_at) as month,
-                SUM(calculated_point)
+                DATE_TRUNC('month',created_at) as date,
+                SUM(calculated_point) as point
             from payments
-            GROUP BY month, user_id;
+            GROUP BY date, user_id;
             `)
     }
 
