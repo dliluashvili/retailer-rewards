@@ -7,6 +7,9 @@ export class MonthlyReport implements IMonthlyReport {
     id: number
 
     @Column()
+    user_id: number
+
+    @Column()
     date: Date
 
     @Column()
