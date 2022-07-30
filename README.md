@@ -14,7 +14,7 @@ By default, the Docker will expose port 3000
 
 You need to create .env.development file with following enviroment variables:
 
-###### Note: This is for development purpose and please use this config
+##### Note: This is for development purpose and please use this config
 * POSTGRES_HOST=retailer-rewards-db
 * POSTGRES_PORT=5432
 * POSTGRES_USER=postgres
@@ -27,6 +27,7 @@ $ docker-compose up
 ```
 
 ## Migrations
+##### Note: Generate and run migrations or easily: change value of synchronize from false to true inside src/config/typeorm.config.ts
 
 ```sh
 docker exec -it retailer-rewards-server sh
