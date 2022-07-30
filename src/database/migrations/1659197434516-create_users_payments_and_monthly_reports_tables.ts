@@ -18,5 +18,4 @@ export class createUsersPaymentsAndMonthlyReportsTables1659197434516 implements 
         await queryRunner.query(`DROP TABLE "users"`);
         await queryRunner.query(`DROP TABLE "monthly_report"`);
     }
-
 }

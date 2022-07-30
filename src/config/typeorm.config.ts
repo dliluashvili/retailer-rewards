@@ -9,7 +9,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
             ...defaultConfig(this.configService),
-            synchronize: false,
+            synchronize: true,
             logging: true,
             autoLoadEntities: false,
         } as TypeOrmModuleOptions
