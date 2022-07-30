@@ -26,6 +26,14 @@ You need to create .env.development file with following enviroment variables:
 $ docker-compose up
 ```
 
+## Migrations
+
+```sh
+docker exec -it retailer-rewards-server sh
+npm run migration:generate --migration=<migration_name>
+npm run migration:run
+```
+
 ## Seed data
 
 ```sh
