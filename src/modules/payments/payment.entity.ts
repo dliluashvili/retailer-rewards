@@ -2,6 +2,7 @@ import { IPayment } from './payment.interface'
 
 import {
     Column,
+    CreateDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
@@ -41,8 +42,6 @@ export class Payment implements IPayment {
     })
     calculated_point: number
 
-    @Column({
-        default: 'now()',
-    })
+    @CreateDateColumn()
     created_at: Date
 }
