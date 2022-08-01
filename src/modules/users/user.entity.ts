@@ -31,17 +31,17 @@ export class User implements IUser {
     @Column({
         default: 0,
     })
-    point: number
+    point?: number
 
     @OneToMany(() => Payment, (payment) => payment.user)
-    payments: Payment[]
+    payments?: Payment[]
 
     @OneToMany(() => MonthlyReport, (monthlyReport) => monthlyReport.user)
-    monthly_reports: MonthlyReport[]
+    monthly_reports?: MonthlyReport[]
 
     @CreateDateColumn()
-    created_at: Date
+    created_at?: Date
 
     @UpdateDateColumn()
-    updated_at: Date
+    updated_at?: Date
 }
