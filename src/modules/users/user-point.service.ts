@@ -1,29 +1,21 @@
+import { OVERDOLLARSPENT } from './../../constants/index'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class UserPointService {
-    private readonly pointOver50 = 1
-    private readonly pointOver100 = 1
-
     calculate(price: number): number {
-        let point = 0
+        const overDollars = Object.keys(OVERDOLLARSPENT).map((key) =>
+            parseInt(key)
+        )
 
-        if (price > 50) {
-            point += this.calculateOver50(price)
-        }
+        return overDollars.reduce((point, value) => {
+            const overDollarPoint = OVERDOLLARSPENT[value]
 
-        if (price > 100) {
-            point += this.calculateOver100(price)
-        }
+            if (price > value) {
+                point += (price - value) * overDollarPoint
+            }
 
-        return point
-    }
-
-    private calculateOver50(price: number): number {
-        return (price - 50) * this.pointOver50
-    }
-
-    private calculateOver100(price: number): number {
-        return (price - 100) * this.pointOver100
+            return point
+        }, 0)
     }
 }
