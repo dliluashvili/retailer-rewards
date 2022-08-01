@@ -1,4 +1,4 @@
-import { CountPoint } from 'src/utils/count-point'
+import { UserPointService } from './../../../modules/users/user-point.service'
 import { faker } from '@faker-js/faker'
 import { UsersService } from '../../../modules/users/users.service'
 import { CreatePaymentDto } from './../../../modules/payments/dtos/create-payment.dto'
@@ -11,6 +11,7 @@ import * as moment from 'moment'
 export class PaymentsSeederService implements ISeeder<CreatePaymentDto> {
     constructor(
         private readonly usersService: UsersService,
+        private readonly userPointService: UserPointService,
         private readonly paymentsService: PaymentsService
     ) {}
 
@@ -56,7 +57,7 @@ export class PaymentsSeederService implements ISeeder<CreatePaymentDto> {
                 bannedDigits: ['0'],
             })}`,
             created_at: params.created_at,
-            calculated_point: new CountPoint(price).count(),
+            calculated_point: this.userPointService.calculate(price),
             description: faker.lorem.sentence(),
             price,
         }

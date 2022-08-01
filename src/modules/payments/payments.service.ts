@@ -10,14 +10,15 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { FindManyOptions, Repository } from 'typeorm'
 import { Payment } from './payment.entity'
 import { UsersService } from '../users/users.service'
-import { CountPoint } from 'src/utils/count-point'
 import { EventEmitter2 } from '@nestjs/event-emitter'
+import { UserPointService } from '../users/user-point.service'
 
 @Injectable()
 export class PaymentsService {
     constructor(
         @InjectRepository(Payment)
         private readonly paymentRepo: Repository<Payment>,
+        private readonly userPointService: UserPointService,
         private readonly usersService: UsersService,
         private readonly eventEmitter: EventEmitter2
     ) {}
@@ -59,7 +60,7 @@ export class PaymentsService {
         }
 
         try {
-            const point = new CountPoint(price).count()
+            const point = this.userPointService.calculate(price)
 
             createPaymentDto.calculated_point = point
 
