@@ -44,7 +44,10 @@ npm run seed
 
 ## Test
 
-Todo
+```sh
+docker exec -it retailer-rewards-server sh
+npm run test
+```
 
 ## Datasets
 ### Users
