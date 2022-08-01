@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
-import { HttpCustomException } from 'src/exceptions/http-custom.exception';
+import { HttpCustomException } from './http-custom.exception';
 export class CustomBadRequestException extends HttpCustomException {
-    constructor(logData: any) {
+    constructor(logData: any = null) {
         super('Bad Request', HttpStatus.BAD_REQUEST)
         this.logData = logData
     }
