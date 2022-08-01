@@ -2,17 +2,14 @@ import { CustomBadRequestException } from './../../exceptions/custom-bad-request
 import { PaymentCreatedEvent } from './../../events/payment-created.event'
 import { MonthlyReport } from './../monthly-report/monthly-report.entity'
 import { CreatePaymentDto } from './dtos/create-payment.dto'
-import {
-    Injectable,
-    Logger,
-} from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { FindManyOptions, Repository } from 'typeorm'
 import { Payment } from './payment.entity'
 import { UsersService } from '../users/users.service'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { UserPointService } from '../users/user-point.service'
-import { UserNotFoundException } from 'src/exceptions/user-not-found.exception'
+import { UserNotFoundException } from '../../exceptions/user-not-found.exception'
 
 @Injectable()
 export class PaymentsService {
@@ -79,9 +76,9 @@ export class PaymentsService {
 
             createPaymentDto.calculated_point = point
 
-            const payment = this.paymentRepo.create(createPaymentDto)
+            const _payment = this.paymentRepo.create(createPaymentDto)
 
-            await this.paymentRepo.save(payment)
+            const payment = await this.paymentRepo.save(_payment)
 
             this.logger.log(
                 `successfully created payment for user: ${userId} - payment - ${payment.id}`
