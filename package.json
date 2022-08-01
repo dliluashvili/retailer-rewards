@@ -33,11 +33,13 @@
         "@nestjs/typeorm": "^9.0.0",
         "cross-env": "^7.0.3",
         "moment": "^2.29.4",
+        "nest-winston": "^1.7.0",
         "pg": "^8.7.3",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
-        "typeorm": "^0.3.7"
+        "typeorm": "^0.3.7",
+        "winston": "^3.8.1"
     },
     "devDependencies": {
         "@faker-js/faker": "^7.3.0",
