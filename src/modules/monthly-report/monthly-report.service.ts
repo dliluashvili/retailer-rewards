@@ -1,4 +1,4 @@
-import { getQuarterByMonth } from 'src/utils/get-quarter'
+import { getQuarterByMonth } from '../../utils/get-quarter'
 import { CreateMonthlyReportDto } from './dtos/create-monthly-report.dto'
 import { MonthlyReport } from './monthly-report.entity'
 import { Injectable } from '@nestjs/common'
