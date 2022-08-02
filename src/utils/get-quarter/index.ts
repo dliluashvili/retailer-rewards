@@ -23,3 +23,16 @@ export const getQuarterByMonth = (_month: string | number): number => {
 
     return quarter
 }
+
+export const removeFieldFromArray = <T>(
+    filter: T,
+    field: string
+): Partial<T> => {
+    return Object.keys(filter)
+        .filter((key) => key !== field)
+        .reduce((obj, key) => {
+            return Object.assign(obj, {
+                [key]: filter[key],
+            })
+        }, {})
+}
