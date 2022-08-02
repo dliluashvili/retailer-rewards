@@ -1,4 +1,3 @@
-import { CustomBadRequestException } from './../../exceptions/custom-bad-request.exception'
 import { PaymentCreatedEvent } from './../../events/payment-created.event'
 import { MonthlyReport } from './../monthly-report/monthly-report.entity'
 import { CreatePaymentDto } from './dtos/create-payment.dto'
@@ -24,28 +23,38 @@ export class PaymentsService {
     ) {}
 
     async find(filter: FindManyOptions<Payment> = {}): Promise<Payment[]> {
-        return this.paymentRepo.query(`select
-        u.id as user_id,
-        u.firstname,
-        u.lastname,
-        u.email,
-        payments.*
-    from payments
-    left join users u on u.id = payments.user_id`)
+        return this.paymentRepo
+            .createQueryBuilder('payments')
+            .leftJoinAndSelect('payments.user', 'user')
+            .where(filter)
+            .select([
+                'payments.*',
+                'user.id as user_id',
+                'user.firstname as firstname',
+                'user.lastname as lastname',
+                'user.email as email',
+            ])
+            .getRawMany()
     }
 
-    async monthly(): Promise<MonthlyReport[]> {
-        return this.paymentRepo.query(`select
-        u.id as user_id,
-        u.firstname,
-        u.lastname,
-        u.email,
-        DATE_TRUNC('month',payments.created_at) as date,
-        SUM(calculated_point) as point
-    from payments
-    left join users u on u.id = payments.user_id
-    GROUP BY date, u.id;
-            `)
+    async monthly(
+        filter: FindManyOptions<Payment> = {}
+    ): Promise<MonthlyReport[]> {
+        return this.paymentRepo
+            .createQueryBuilder('payments')
+            .leftJoinAndSelect('payments.user', 'user')
+            .select([
+                'user.id as user_id',
+                'user.firstname as firstname',
+                'user.lastname as lastname',
+                'user.email as email',
+                `DATE_TRUNC('month',payments.created_at) as date`,
+                `SUM(calculated_point) as point`,
+            ])
+            .where(filter)
+            .groupBy('date')
+            .addGroupBy('user.id')
+            .getRawMany()
     }
 
     async create(createPaymentDto: CreatePaymentDto): Promise<number> {

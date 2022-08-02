@@ -1,4 +1,7 @@
-import { getQuarterByMonth } from '../../utils/get-quarter'
+import {
+    getQuarterByMonth,
+    removeFieldFromArray,
+} from '../../utils/get-quarter'
 import { CreateMonthlyReportDto } from './dtos/create-monthly-report.dto'
 import { MonthlyReport } from './monthly-report.entity'
 import { Injectable } from '@nestjs/common'
@@ -18,39 +21,56 @@ export class MonthlyReportService {
         filter: FindManyOptions<MonthlyReport> = {}
     ): Promise<MonthlyReport[]> {
         return this.monthlyReportRepo
-            .query(`select u.id as user_id, u.firstname, u.lastname, u.email, quarter,monthly_report.point
-            from monthly_report left join users u on u.id = monthly_report.user_id`)
+            .createQueryBuilder('monthly_report')
+            .leftJoinAndSelect('monthly_report.user', 'user')
+            .select([
+                'user.id as user_id',
+                'user.firstname as firstname',
+                'user.lastname as lastname',
+                'user.email as email',
+                'monthly_report.quarter as quarter',
+                'monthly_report.point as point',
+            ])
+            .where(filter)
+            .getRawMany()
     }
 
     async quarters(filter: IFilterQuery = {}) {
-        const params = []
+        const { month } = filter
 
-        let query = `select u.id as user_id, u.firstname, u.lastname, u.email, quarter, date_part('month',date) as month, SUM(monthly_report.point) as point 
-        from monthly_report left join users u on u.id = monthly_report.user_id`
-
-        let paramsIndex = 0
-
-        Object.keys(filter).map((key) => {
-            const value = filter[key]
-            if (key !== 'month') {
-                paramsIndex++
-                query += ` ${
-                    paramsIndex > 1 ? 'and' : 'where'
-                } ${key}=$${paramsIndex}`
-                params.push(value)
-            }
-        })
-
-        query += ` group by u.id, month, quarter`
-
-        if (filter.month) {
-            query += ` HAVING date_part('month',date)=$${++paramsIndex}`
-            params.push(filter.month)
+        if (month) {
+            filter = removeFieldFromArray<IFilterQuery>(filter, 'month')
         }
 
-        query += ` ORDER BY user_id, month, quarter;`
+        const query = this.monthlyReportRepo
+            .createQueryBuilder('monthly_report')
+            .leftJoinAndSelect('monthly_report.user', 'user')
+            .select([
+                'user.id as user_id',
+                'user.firstname as firstname',
+                'user.lastname as lastname',
+                'user.email as email',
+                'monthly_report.quarter as quarter',
+                `date_part('month',date) as month`,
+                'SUM(monthly_report.point) as point',
+            ])
+            .where(filter)
+            .groupBy('user.id')
+            .addGroupBy('month')
+            .addGroupBy('quarter')
 
-        return this.monthlyReportRepo.query(query, params)
+        if (month) {
+            query.having(`date_part('month',date) = :month`, {
+                month,
+            })
+        }
+
+        query
+            .orderBy('user.id', 'ASC')
+            .addOrderBy('month', 'ASC')
+            .addOrderBy('quarter', 'ASC')
+
+        return query.getRawMany()
     }
 
     async create(
