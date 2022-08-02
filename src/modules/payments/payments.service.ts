@@ -63,37 +63,33 @@ export class PaymentsService {
 
         this.logger.log(`user exists on id: ${userId}`)
 
-        try {
-            this.logger.log(
-                `start point calculation for user: ${userId} - price ${price}`
-            )
+        this.logger.log(
+            `start point calculation for user: ${userId} - price ${price}`
+        )
 
-            const point = this.userPointService.calculate(price)
+        const point = this.userPointService.calculate(price)
 
-            this.logger.log(
-                `end point calculation for user: ${userId} - price ${price} - point ${point}`
-            )
+        this.logger.log(
+            `end point calculation for user: ${userId} - price ${price} - point ${point}`
+        )
 
-            createPaymentDto.calculated_point = point
+        createPaymentDto.calculated_point = point
 
-            const _payment = this.paymentRepo.create(createPaymentDto)
+        const _payment = this.paymentRepo.create(createPaymentDto)
 
-            const payment = await this.paymentRepo.save(_payment)
+        const payment = await this.paymentRepo.save(_payment)
 
-            this.logger.log(
-                `successfully created payment for user: ${userId} - payment - ${payment.id}`
-            )
+        this.logger.log(
+            `successfully created payment for user: ${userId} - payment - ${payment.id}`
+        )
 
-            this.eventEmitter.emit(
-                'payment.created',
-                new PaymentCreatedEvent(userId, point)
-            )
+        this.eventEmitter.emit(
+            'payment.created',
+            new PaymentCreatedEvent(userId, point)
+        )
 
-            this.logger.log(`sent payment.created event to user: ${userId}`)
+        this.logger.log(`sent payment.created event to user: ${userId}`)
 
-            return payment.id
-        } catch (error) {
-            throw new CustomBadRequestException(error.message)
-        }
+        return payment.id
     }
 }

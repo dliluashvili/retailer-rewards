@@ -1,10 +1,6 @@
 import { UserNotFoundException } from './../../exceptions/user-not-found.exception'
 import { UpdateUserDto } from './dtos/update-user.dto'
-import {
-    BadRequestException,
-    Injectable,
-    Logger,
-} from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { InjectRepository } from '@nestjs/typeorm'
 import { FindOptionsWhere, FindManyOptions, Repository } from 'typeorm'
@@ -30,10 +26,14 @@ export class UsersService {
         return user
     }
 
-    create(createUserDto: CreateUserDto): Promise<User> {
-        const user = this.userRepo.create(createUserDto)
+    async create(createUserDto: CreateUserDto): Promise<User> {
+        const _user = this.userRepo.create(createUserDto)
 
-        return this.userRepo.save(user)
+        const user = await this.userRepo.save(_user)
+
+        this.logger.log(`Created new user - ${user.id}`)
+
+        return user
     }
 
     async update(id: number, updateParams: Partial<User>): Promise<number> {
@@ -44,6 +44,8 @@ export class UsersService {
         }
 
         await this.userRepo.update(id, updateParams)
+
+        this.logger.log(`Updated user - ${user.id}`)
 
         return user.id
     }
