@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common'
 @Injectable()
 export class UserPointService {
     calculate(price: number): number {
-        if (price < 1) {
+        if (!price) {
             throw new CustomBadRequestException(
                 'An incorrect price is provided'
             )
